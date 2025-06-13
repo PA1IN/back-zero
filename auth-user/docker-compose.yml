@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: auth_db
+      MYSQL_USER: authuser
+      MYSQL_PASSWORD: authuserpass
+    ports:
+      - '3306:3306'
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  authuser:
+    build: .
+    ports:
+      - '3003:3003'
+    depends_on:
+      - mysql
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_USERNAME: authuser
+      DB_PASSWORD: authuserpass
+      DB_NAME: auth_db
+      JWT_SECRET: clave_super_segura
+      RISK_ANALYSIS_URL: http://localhost:3005/risk
+
+volumes:
+  mysql_data:

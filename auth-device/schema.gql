@@ -1,0 +1,20 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type DeviceResponse {
+  token: String!
+  success: Boolean!
+}
+
+type Query {
+  dummyQuery: String!
+}
+
+type Mutation {
+  loginDevice(loginDto: DeviceLogin!): DeviceResponse!
+}
+
+input DeviceLogin {
+  device: String!
+}

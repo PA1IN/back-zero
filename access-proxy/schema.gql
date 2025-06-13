@@ -1,0 +1,8 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Query {
+  proxyRequest(operation: String!, variables: String): String!
+  printeo(operation: String!, variables: String): String!
+}
