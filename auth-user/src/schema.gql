@@ -4,6 +4,7 @@
 
 type LoginResponse {
   token: String!
+  idDevice: String!
 }
 
 type Query {

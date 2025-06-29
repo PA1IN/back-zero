@@ -13,7 +13,6 @@ export class AuthResolver {
         return 'graphql authUser';
     }
 
-
     @Mutation(()=> LoginResponse)
     async login(@Args('loginInput') loginInput: LoginInput) {
         const user = await this.authService.validarUser(

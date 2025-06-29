@@ -8,4 +8,7 @@ export class DeviceResponse{
 
     @Field()
     success: boolean;
+
+    @Field()
+    idDevice: number;
 }

@@ -7,6 +7,7 @@ import { HttpService } from '@nestjs/axios';
 import { firstValueFrom} from 'rxjs';
 import { User } from '../users/entities/user.entity';
 import { LoginResponse } from './dto/login-response.dto';
+import { syncUserDevice } from 'src/request/request.graphql';
 
 @Injectable()
 export class AuthService {
@@ -42,7 +43,7 @@ export class AuthService {
             }
                 
         } catch (error) {
-            console.warn('no se ha podido notificar al Riskanalysis:', error);
+            //console.warn('no se ha podido notificar al Riskanalysis:', error);
         }
         return {token: token} as LoginResponse;
     }
@@ -60,6 +61,17 @@ export class AuthService {
             role: 'user',
         });
 
+        ///############################################################################
+        try {
+            const result = await syncUserDevice(user.id);
+            console.log('Resultado de syncUserDevice:', result); // debería imprimir el id del dispositivo
+            const tokenUser = this.login(user);
+            return ({token: (await tokenUser).token, idDevice: result}) as LoginResponse;
+        } catch (error) {
+            console.warn('Error al sincronizar con auth-device:', error);
+        }
+
+        
         return this.login(user);
     }
 }

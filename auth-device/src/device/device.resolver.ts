@@ -21,6 +21,19 @@ export class DeviceResolver{
         return this.deviceService.loginDevice(loginDto, token);
     }
 
+    @Mutation(returns => Number)
+    syncUserDevice(@Args('userId') userId : number, @Context() context){
+        return this.deviceService.registerDevice(userId, context.req.socket.remoteAddress);
+    }
+
+    @Query(() => String)
+    obtenerMiIp(@Context() context): string{
+        console.log(context);
+        console.log('IP del cliente:', context.req.socket.remoteAddress);
+
+        return context;
+    }
+
     private extractTokenFromHeader(request: any): string | undefined {
         const authHeader = request.headers['authorization'];
         if (!authHeader) {

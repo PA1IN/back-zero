@@ -8,3 +8,10 @@ export const LOGIN = gql`
         }
     }
 ` 
+export const REGISTER = gql`
+    mutation Register($crearUserInput: CrearUserInput!) {
+        register(crearUserInput: $crearUserInput) {
+            idDevice
+        }
+    }
+`

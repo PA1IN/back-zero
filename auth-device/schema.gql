@@ -5,14 +5,17 @@
 type DeviceResponse {
   token: String!
   success: Boolean!
+  idDevice: Float!
 }
 
 type Query {
   dummyQuery: String!
+  obtenerMiIp: String!
 }
 
 type Mutation {
   loginDevice(loginDto: DeviceLogin!): DeviceResponse!
+  syncUserDevice(userId: Float!): Float!
 }
 
 input DeviceLogin {

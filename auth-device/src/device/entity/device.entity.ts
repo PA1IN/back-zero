@@ -11,4 +11,13 @@ export class DeviceEntity{
 
     @Column()
     device_id: string;
+
+    @Column({default: null})//Desde el navegador no hay forma de extraer la mac, solo usando java se puede
+    mac: string;
+
+    @Column()
+    ip: string;
+
+    @Column({default: null})
+    operating_system: string;
 }

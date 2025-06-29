@@ -5,4 +5,7 @@ export class LoginResponse{
 
     @Field()
     token: string;
+
+    @Field()
+    idDevice: string;
 }
