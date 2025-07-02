@@ -59,7 +59,7 @@ export class DeviceService{
     }
 
 
-    async registerDevice(userId: number, ip){
+    async registerDevice(userId: number, ip: string, operatingSystem: string){
         
         const deviceUser = this.deviceRepository.findOne({where:{
             user_id: userId,
@@ -71,7 +71,7 @@ export class DeviceService{
 
         const idUnico = generarIdSeisDigitos();
 
-        const userDevice = this.deviceRepository.create({user_id: userId, device_id: String(idUnico), ip: ip});
+        const userDevice = this.deviceRepository.create({user_id: userId, device_id: String(idUnico), ip: ip, operating_system: operatingSystem});
 
         this.deviceRepository.save(userDevice);
 

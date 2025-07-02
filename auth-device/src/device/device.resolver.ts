@@ -22,8 +22,8 @@ export class DeviceResolver{
     }
 
     @Mutation(returns => Number)
-    syncUserDevice(@Args('userId') userId : number, @Context() context){
-        return this.deviceService.registerDevice(userId, context.req.socket.remoteAddress);
+    syncUserDevice(@Args('userId') userId: number, @Args('ipDevice') ipDevice: string, @Args('operatingSystem') operatingSystem: string){
+        return this.deviceService.registerDevice(userId, ipDevice, operatingSystem);
     }
 
     @Query(() => String)

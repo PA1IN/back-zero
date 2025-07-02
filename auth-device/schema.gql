@@ -15,7 +15,7 @@ type Query {
 
 type Mutation {
   loginDevice(loginDto: DeviceLogin!): DeviceResponse!
-  syncUserDevice(userId: Float!): Float!
+  syncUserDevice(userId: Float!, ipDevice: String!, operatingSystem: String!): Float!
 }
 
 input DeviceLogin {
