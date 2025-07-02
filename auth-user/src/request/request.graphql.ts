@@ -8,13 +8,13 @@ type SyncUserDeviceResponse = {
     syncUserDevice: string;
 };
 
-export const syncUserDevice = async (userId: number): Promise<string> => {
+export const syncUserDevice = async (userId: number, ipDevice: string, operatingSystem: string): Promise<string> => {
     const mutation = gql`
-        mutation SyncUserDevice($userId: Float!) {
-            syncUserDevice(userId: $userId)
+        mutation SyncUserDevice($userId: Float!, $ipDevice: String!, $operatingSystem: String!) {
+            syncUserDevice(userId: $userId, ipDevice: $ipDevice, operatingSystem: $operatingSystem)
         }
     `;
 
-    const response = await client.request<SyncUserDeviceResponse>(mutation, { userId });
+    const response = await client.request<SyncUserDeviceResponse>(mutation, { userId, ipDevice, operatingSystem});
     return response.syncUserDevice;
 };

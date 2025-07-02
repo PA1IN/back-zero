@@ -24,4 +24,8 @@ input LoginInput {
 input CrearUserInput {
   email: String!
   password: String!
+  operatingSystem: String!
+  timeZone: String!
+  navigator: String!
+  time: String!
 }

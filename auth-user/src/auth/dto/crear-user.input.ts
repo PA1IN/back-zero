@@ -7,4 +7,16 @@ export class CrearUserInput {
 
     @Field()
     password: string;
+
+    @Field()
+    operatingSystem: string;
+
+    @Field()
+    timeZone: string;
+
+    @Field()
+    navigator: string;
+
+    @Field() //No lo colocamos como date por simplicidad, es preferible el string
+    time: string;
 }

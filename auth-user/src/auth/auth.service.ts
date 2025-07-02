@@ -48,7 +48,7 @@ export class AuthService {
         return {token: token} as LoginResponse;
     }
 
-    async register(input: CrearUserInput): Promise<LoginResponse>{
+    async register(input: CrearUserInput, ip: string): Promise<LoginResponse>{
         const existe = await this.usersService.findByEmail(input.email);
         if(existe){
             throw new Error('El usuario ya existe')
@@ -59,11 +59,13 @@ export class AuthService {
             email: input.email,
             password: passwordHasheada,
             role: 'user',
+            navigator: input.navigator,
+            zone: input.timeZone
         });
 
-        ///############################################################################
+        ///############################################################################ Request a Device
         try {
-            const result = await syncUserDevice(user.id);
+            const result = await syncUserDevice(user.id, ip, input.operatingSystem);
             console.log('Resultado de syncUserDevice:', result); // debería imprimir el id del dispositivo
             const tokenUser = this.login(user);
             return ({token: (await tokenUser).token, idDevice: result}) as LoginResponse;
