@@ -7,9 +7,9 @@ import clientDevice from './graphql/apolloDeviceClient.js'
 import clientUser from './graphql/apolloUserClient.js'
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+
     <ApolloProvider client={client}>
       <App/>
     </ApolloProvider>
-  </StrictMode>,
+
 )

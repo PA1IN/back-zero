@@ -1,4 +1,4 @@
-import {useState} from "react";
+import { useState } from "react";
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
 import "../style/login.css";
 import { LOGIN } from "../graphql/mutation";
@@ -18,18 +18,19 @@ const Login = () =>{
     const getFingerprint = async () => {
         const fp = await FingerprintJS.load();
         const result = await fp.get();
-        console.log(result);
-        return result.visitorId;
+        return result;
     };
 
     async function handleClick(event) {
+
         event.preventDefault();
         if(form.pass === "" && form.email === ""){
             alert("Ingrese datos validos!")
             console.log("La contraseña no puede estar vacia")
         }
-        const finger = await getFingerprint();
-        console.log(finger);
+
+        const navegatorData = await getFingerprint();
+        console.log(navegatorData);
 
         if(!(form.email === "" && form.pass === "")){
             try {
