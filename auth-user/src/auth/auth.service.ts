@@ -32,8 +32,15 @@ export class AuthService {
 
         //Se genera el token con los datos recibidos para que access control lo compara con lo que hay en base de datos;
         //const user = await this.usersService.findByEmail(loginInput.email);
+        const user = await this.usersService.findByEmail(loginInput.email);
+
+        if(!user){
+            throw new Error("Usuario no registrado");
+        }
+
         try{
             const payload = {
+                userId : user.id,
                 email: loginInput.email, 
                 navigator: loginInput.navigator, 
                 zone: loginInput.zone, 
