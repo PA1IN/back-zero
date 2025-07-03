@@ -4,7 +4,7 @@ import { setContext } from '@apollo/client/link/context';
 const authLink = setContext((_, { headers }) => ({
     headers: {
         ...headers,
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${localStorage.getItem('userToken')}`,
         'X-Device-ID': 'abc123',
     }
 }));

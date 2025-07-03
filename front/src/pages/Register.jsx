@@ -41,7 +41,7 @@ const Register = () => {
                     variables:{
                         crearUserInput:{
                             email: form.email,
-                            pass: form.pass,
+                            password: form.pass,
                             operatingSystem: operativeSystem,
                             timeZone: timeZone,
                             navigator: navigator,
@@ -50,7 +50,8 @@ const Register = () => {
                     }
                 });
 
-                alert(response.data.idDevice);
+                localStorage.setItem("idDevice", response.data.register.idDevice);
+
             } catch (error) {
                 console.log(error);
             };

@@ -15,3 +15,7 @@ export const REGISTER = gql`
         }
     }
 `
+
+export const LOGIN_DEVICE = gql`
+    
+`
