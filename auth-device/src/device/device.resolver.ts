@@ -16,33 +16,33 @@ export class DeviceResolver{
     loginDevice(@Args('loginDto') loginDto : DeviceLogin, @Context() context): Promise<DeviceResponse>{
         const token = this.extractTokenFromHeader(context);
         if (!token) {
-        throw new Error('No se encontró el token de autorización');
-    }
+            throw new Error('No se encontró el token de autorización');
+        }
         return this.deviceService.loginDevice(loginDto, token);
-    }
+    };
 
     @Mutation(returns => Number)
     syncUserDevice(@Args('userId') userId: number, @Args('ipDevice') ipDevice: string, @Args('operatingSystem') operatingSystem: string){
         return this.deviceService.registerDevice(userId, ipDevice, operatingSystem);
-    }
+    };
 
     @Query(() => String)
     obtenerMiIp(@Context() context): string{
         console.log(context);
         console.log('IP del cliente:', context.req.socket.remoteAddress);
-
         return context;
     }
 
-    private extractTokenFromHeader(request: any): string | undefined {
-        const authHeader = request.headers['authorization'];
-        if (!authHeader) {
-            return undefined;
-        }
+    private extractTokenFromHeader(context: any): string | undefined {
+        const req = context.req;
+        const authHeader = req?.headers?.authorization;
+
+        if (!authHeader) return undefined;
+
         const [type, token] = authHeader.split(' ');
-        if (type !== 'Bearer' || !token) {
-            return undefined;
-        }
+        if (type !== 'Bearer' || !token) return undefined;
+
         return token;
     }
+
 }

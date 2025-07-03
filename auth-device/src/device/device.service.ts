@@ -30,7 +30,21 @@ export class DeviceService{
 
         try {
         // Verifica el token y extrae los datos
+        //Para extraer los datos tiene esta estructura
+        /*
+            const payload = {
+                email: loginInput.email, 
+                navigator: loginInput.navigator, 
+                zone: loginInput.zone, 
+                operatingSystem: loginInput.operatingSystem,
+                ip: ip,
+                time: loginInput.time
+            }
+        */
+        console.log(secret);
         const decodedToken = jwt.verify(token, secret) as any; 
+
+        console.log(decodedToken);
         
         // Verifica si el usuario ya tiene dispositivos registrados
         const existingDevice = await this.deviceRepository.findOne({
@@ -47,16 +61,30 @@ export class DeviceService{
             throw new Error("El dispositivo no pertenece al usuario");
         }
 
+        // modificamos el token para crear uno nuevo
+        const newPayload = {
+            deviceId: device,
+            userId: decodedToken.userId,
+            email: decodedToken.email,
+            navigator: decodedToken.navigator,
+            operatingSystem: decodedToken.operatingSystem,
+            zone: decodedToken.zone,
+            ip: decodedToken.ip,
+            time: decodedToken.time,
+        };
+
+        const signedToken = jwt.sign(newPayload, secret, { expiresIn: '1d' });
+
         // Si el dispositivo coincide, se le da acceso
         return {
             success: true,
-            token: jwt.sign({deviceId: device }, secret, { expiresIn: '7d' })
+            token: signedToken,
         } as DeviceResponse;
         
         } catch (error) {
             throw new Error('Token inválido o sesión expirada.');
         }
-    }
+    };
 
 
     async registerDevice(userId: number, ip: string, operatingSystem: string){
@@ -76,9 +104,9 @@ export class DeviceService{
         this.deviceRepository.save(userDevice);
 
         return idUnico;
-    }
-}
+    };
+};
 
 function generarIdSeisDigitos(): number {
     return Math.floor(100000 + Math.random() * 900000);
-}
+};
