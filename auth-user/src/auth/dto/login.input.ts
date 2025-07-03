@@ -7,4 +7,19 @@ export class LoginInput {
 
     @Field()
     password: string;
-}
+
+    @Field()
+    time: string;
+
+    @Field()
+    navigator: string;
+
+    @Field()
+    operatingSystem: string;
+
+    @Field()
+    zone: string;
+
+    /*@Field()
+    idDevice: string;*/
+};

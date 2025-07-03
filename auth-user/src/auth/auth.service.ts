@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService} from '../users/users.service';
@@ -8,6 +8,7 @@ import { firstValueFrom} from 'rxjs';
 import { User } from '../users/entities/user.entity';
 import { LoginResponse } from './dto/login-response.dto';
 import { syncUserDevice } from 'src/request/request.graphql';
+import { LoginInput } from './dto/login.input';
 
 @Injectable()
 export class AuthService {
@@ -27,25 +28,26 @@ export class AuthService {
         return null;
     }
 
-    async login(user: Omit<User, 'password'>): Promise<LoginResponse>{
-        const payload = { sub: user.id, email: user.email, role: user.role };
-        const token = this.jwtService.sign(payload);
+    async login(loginInput: LoginInput, ip: string): Promise<LoginResponse>{
+
+        //Se genera el token con los datos recibidos para que access control lo compara con lo que hay en base de datos;
+        //const user = await this.usersService.findByEmail(loginInput.email);
         try{
-            const url = process.env.RISK_ANALYSIS_URL;
-            if(url){
-                await firstValueFrom(
-                    this.httpService.post(url, {
-                        userId: user.id,
-                        action: 'login_success',
-                        timestamp: new Date().toISOString(),
-                    })
-                );
+            const payload = {
+                email: loginInput.email, 
+                navigator: loginInput.navigator, 
+                zone: loginInput.zone, 
+                //idDevice: loginInput.idDevice, lo saque porque es el login del user, no es necesario aun el id del dispositivo
+                operatingSystem: loginInput.operatingSystem,
+                ip: ip,
+                time: loginInput.time
             }
-                
+            const token = this.jwtService.sign(payload);
+            return {token: token} as LoginResponse;
         } catch (error) {
             //console.warn('no se ha podido notificar al Riskanalysis:', error);
         }
-        return {token: token} as LoginResponse;
+        throw new Error("No es posible generar el token");
     }
 
     async register(input: CrearUserInput, ip: string): Promise<LoginResponse>{
@@ -67,13 +69,12 @@ export class AuthService {
         try {
             const result = await syncUserDevice(user.id, ip, input.operatingSystem);
             console.log('Resultado de syncUserDevice:', result); // debería imprimir el id del dispositivo
-            const tokenUser = this.login(user);
-            return ({token: (await tokenUser).token, idDevice: result}) as LoginResponse;
+            const tokenUser = this.jwtService.sign(user);
+            return ({token: tokenUser, idDevice: result}) as LoginResponse;
         } catch (error) {
             console.warn('Error al sincronizar con auth-device:', error);
         }
 
-        
-        return this.login(user);
+        throw new Error("No se genero el token");
     }
 }

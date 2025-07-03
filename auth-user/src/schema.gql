@@ -19,6 +19,10 @@ type Mutation {
 input LoginInput {
   email: String!
   password: String!
+  time: String!
+  navigator: String!
+  operatingSystem: String!
+  zone: String!
 }
 
 input CrearUserInput {

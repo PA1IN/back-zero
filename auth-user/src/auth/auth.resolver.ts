@@ -14,7 +14,7 @@ export class AuthResolver {
     }
 
     @Mutation(()=> LoginResponse)
-    async login(@Args('loginInput') loginInput: LoginInput) {
+    async login(@Args('loginInput') loginInput: LoginInput, @Context() context) {
         const user = await this.authService.validarUser(
             loginInput.email,
             loginInput.password,
@@ -22,7 +22,10 @@ export class AuthResolver {
         if(!user){
             throw new Error('Credenciales incorrectas');
         }
-        return this.authService.login(user);
+        
+        const ip = context.req.socket.remoteAddress;
+
+        return this.authService.login(loginInput, ip);
     }
 
     @Mutation(() => LoginResponse) //Esta funcion hace la mayor parte del trabajo
