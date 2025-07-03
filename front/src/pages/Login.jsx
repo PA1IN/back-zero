@@ -1,10 +1,15 @@
 import { useState, useEffect } from "react";
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
-import "../style/login.css";
-import { LOGIN } from "../graphql/mutation";
-import { useMutation, useLazyQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
+//#Clientes
 import clientUser from "../graphql/apolloUserClient";
-import { PRINTEO } from "../graphql/query";
+import clientDevice from "../graphql/apolloDeviceClient";
+//import { PRINTEO } from "../graphql/query";
+//#Peticiones
+import { LOGIN } from "../graphql/mutation";
+import { LOGIN_DEVICE } from "../graphql/mutation";
+//#Estilos
+import "../style/login.css";
 
 const Login = () =>{
     const [form, setForm] = useState({
@@ -13,6 +18,7 @@ const Login = () =>{
     });
 
     const [login,{data, loading, error}] = useMutation(LOGIN,{client:clientUser});
+    const [loginDevice, {data: dataDevice, error: errorDevice}] = useMutation(LOGIN_DEVICE, {client: clientDevice});
     //const [printeo] = useLazyQuery(PRINTEO, { client: clientUser }); lo use para el proxy nomas
     const [userAgent, setUserAgent] = useState('');
     const time = new Date();
@@ -59,10 +65,22 @@ const Login = () =>{
                 localStorage.setItem("userToken", response.data.login.token);
 
                 //Enviar en el header el toke user para usar la peticion loginDevice y se envia la id del dispositivo
+                const idDevice = await localStorage.getItem("idDevice");
+                const responseDevice = await loginDevice({
+                    variables:{
+                        loginDto:{
+                            device: idDevice
+                        }
+                    }
+                });
+
+                //Recibir el Token definitivo para luego enviarlo a proxy
+                console.log("Token device");
+                alert(responseDevice.data.loginDevice.token);
+                console.log(responseDevice.data.loginDevice.token);
+
+                //Envio al Proxy
                 
-
-
-
 
             } catch (error) {
                 alert(error);
