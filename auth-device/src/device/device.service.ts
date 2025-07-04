@@ -7,7 +7,6 @@ import { ConfigService } from "@nestjs/config";
 import { Repository } from "typeorm";
 import * as jwt from "jsonwebtoken";
 
-
 @Injectable()
 export class DeviceService{
 
@@ -98,9 +97,7 @@ export class DeviceService{
         };
 
         const idUnico = generarIdSeisDigitos();
-
         const userDevice = this.deviceRepository.create({user_id: userId, device_id: String(idUnico), ip: ip, operating_system: operatingSystem});
-
         this.deviceRepository.save(userDevice);
 
         return idUnico;
