@@ -21,3 +21,9 @@ export const LOGIN_DEVICE = gql`
         }
     }
 `
+
+export const PROXY = gql`
+    mutation Mutation {
+        requestToken
+    }
+`

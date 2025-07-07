@@ -6,3 +6,7 @@ type Query {
   proxyRequest(operation: String!, variables: String): String!
   printeo(operation: String!, variables: String): String!
 }
+
+type Mutation {
+  requestToken: String!
+}

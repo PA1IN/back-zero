@@ -1,4 +1,4 @@
-import { Resolver, Query, Args, Context } from "@nestjs/graphql";
+import { Resolver, Query, Args, Context, Mutation } from "@nestjs/graphql";
 import { ProxyService } from "./proxy.service";
 import { gql } from "graphql-request";
 
@@ -12,7 +12,7 @@ export class ProxyResolver{
         const query = gql`${operation}`;
         const vars = variables ? JSON.parse(variables) : {};
         return this.proxyService.forward(query, vars);
-    }
+    };
 
     @Query(() => String)
     async printeo(
@@ -23,5 +23,11 @@ export class ProxyResolver{
         const req = context.req;
         console.log("Headers:", req.headers);
         console.log("Body:", req.body);
-    }
-}
+    };
+
+    @Mutation(() => String)
+    async requestToken(@Context() context){
+        const req = context.req;
+        return this.proxyService.forwardAccessControl(req);
+    };
+};

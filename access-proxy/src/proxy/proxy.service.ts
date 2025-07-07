@@ -15,4 +15,8 @@ export class ProxyService{
             throw error;
         }
     }
+
+    async forwardAccessControl(query: string){
+        
+    }
 }
