@@ -10,14 +10,14 @@ services:
       MYSQL_USER: authuser
       MYSQL_PASSWORD: authuserpass
     ports:
-      - '3306:3306'
+      - '3307:3306'
     volumes:
       - mysql_data:/var/lib/mysql
 
   authuser:
     build: .
     ports:
-      - '3003:3003'
+      - '3002:3002'
     depends_on:
       - mysql
     environment:
@@ -27,7 +27,7 @@ services:
       DB_PASSWORD: authuserpass
       DB_NAME: auth_db
       JWT_SECRET: clave_super_segura
-      RISK_ANALYSIS_URL: http://localhost:3005/risk
+      RISK_ANALYSIS_URL: http://riskanalysis:3006/risk
 
 volumes:
   mysql_data:

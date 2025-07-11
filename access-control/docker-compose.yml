@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  accesscontrol:
+    build: .
+    container_name: access_control_service
+    ports:
+      - '3005:3005'
+    environment:
+      AUTH_USER_URL: http://authuser:3002
+      AUTH_DEVICE_URL: http://authdevice:3004
+      RISK_ANALYSIS_URL: http://riskanalysis:3006

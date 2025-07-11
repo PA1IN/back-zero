@@ -1,20 +1,31 @@
-import { gql, GraphQLClient } from "graphql-request";
-
-const url = 'http://192.168.1.4:3004/graphql';
-
-const client = new GraphQLClient(url);
-
 type SyncUserDeviceResponse = {
-    syncUserDevice: string;
+  syncUserDevice: string;
 };
 
-export const syncUserDevice = async (userId: number, ipDevice: string, operatingSystem: string): Promise<string> => {
-    const mutation = gql`
-        mutation SyncUserDevice($userId: Float!, $ipDevice: String!, $operatingSystem: String!) {
-            syncUserDevice(userId: $userId, ipDevice: $ipDevice, operatingSystem: $operatingSystem)
-        }
-    `;
+export const syncUserDevice = async (
+  userId: number,
+  ipDevice: string,
+  operatingSystem: string
+): Promise<string> => {
+  // Import dinámico dentro de la función
+  const { GraphQLClient, gql } = await import("graphql-request");
 
-    const response = await client.request<SyncUserDeviceResponse>(mutation, { userId, ipDevice, operatingSystem});
-    return response.syncUserDevice;
+  // Usa el nombre del contenedor en Docker si estás dentro de contenedores
+  const url = 'http://authdevice:3004/graphql';
+
+  const client = new GraphQLClient(url);
+
+  const mutation = gql`
+    mutation SyncUserDevice($userId: Float!, $ipDevice: String!, $operatingSystem: String!) {
+      syncUserDevice(userId: $userId, ipDevice: $ipDevice, operatingSystem: $operatingSystem)
+    }
+  `;
+
+  const response = await client.request<SyncUserDeviceResponse>(mutation, {
+    userId,
+    ipDevice,
+    operatingSystem,
+  });
+
+  return response.syncUserDevice;
 };

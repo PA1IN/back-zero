@@ -1,19 +1,34 @@
-version: '3.8'
+
 services:
   db:
     image: mysql:8.0
-    container_name: device_container
     command: --default-authentication-plugin=mysql_native_password
-
+    restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: device_db
+      MYSQL_USER: deviceuser
+      MYSQL_PASSWORD: devicepass
     ports:
-      - "3314:3306"
+      - '3314:3306' 
     volumes:
       - mysql_data:/var/lib/mysql
+
+  authdevice:
+    build: .
+    container_name: auth_device_service
+    ports:
+      - '3004:3004'
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USERNAME: deviceuser
+      DB_PASSWORD: devicepass
+      DB_NAME: device_db
+      SECRET: clave_super_segura
+      RISK_ANALYSIS_URL: http://riskanalysis:3006/risk
 
 volumes:
   mysql_data:

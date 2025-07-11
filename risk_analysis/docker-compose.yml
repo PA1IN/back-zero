@@ -1,10 +1,9 @@
-version: '3.8'
 services:
   db:
     image: mysql:8.0
-    container_name: risk_container
+    container_name: risk_db_container
     command: --default-authentication-plugin=mysql_native_password
-
+    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: riskDB
@@ -14,6 +13,20 @@ services:
       - "3310:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+
+  riskanalysis:
+    build: .
+    container_name: riskanalysis
+    ports:
+      - "3006:3006"
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_USERNAME: risk_user
+      DB_PASSWORD: root
+      DB_NAME: riskDB
 
 volumes:
   mysql_data:
