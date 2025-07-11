@@ -8,6 +8,7 @@ export class RiskResolver {
 
   @Mutation(() => String)
   async analyzeAccessRisk(@Args('input') input: RiskInput): Promise<string> {
+    //console.log("datos de control", input);
     return this.riskService.registrarRiesgo(input);
   }
 

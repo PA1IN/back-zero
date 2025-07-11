@@ -1,19 +1,34 @@
-import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client';
+import { ApolloClient, InMemoryCache, HttpLink, ApolloLink, from } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
 const authLink = setContext(async (_, { headers }) => {
     const token = await localStorage.getItem('userToken');
+    console.log("token a proxy ->>>>>>>>", token);
     return {
         headers: {
         ...headers,
-        Authorization: token ? `Bearer ${token}` : "",
+        authorization: token ? `Bearer ${token}` : "",
         }
     };
 });
 
+const afterware = new ApolloLink((operation, forward) => {
+    return forward(operation).map((response) => {
+        const context = operation.getContext();
+        const tokenNuevo = context.response.headers.get('x-access-token');
+        if(tokenNuevo)
+            {
+                localStorage.setItem('userToken', tokenNuevo);
+            } 
+        return response;
+    })
+})
+
+const httpLink = new HttpLink({ uri: 'http://192.168.1.3:3003/graphql' });
+
 const clientProxy = new ApolloClient({
     //Aca se cambia la ip para el proxy
-    link: authLink.concat(new HttpLink({ uri: 'http://localhost:3003/graphql' })),
+    link: from([authLink, afterware, httpLink]),
     cache: new InMemoryCache(),
 });
 

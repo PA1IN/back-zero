@@ -24,8 +24,7 @@ import { ConfigModule } from '@nestjs/config';
       driver:ApolloDriver,
       autoSchemaFile: join(process.cwd(), "schema.gql"),
       playground: true,
-      path: "/graphql",
-      context: ({ req }) => ({ req })
+      path: "/graphql"
     })
   ],
 })

@@ -11,6 +11,7 @@ type DeviceResponse {
 type Query {
   dummyQuery: String!
   obtenerMiIp: String!
+  verifyDevice(token: String!, deviceId: String!, userId: Float!): Boolean!
 }
 
 type Mutation {

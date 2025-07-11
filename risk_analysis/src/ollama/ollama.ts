@@ -19,3 +19,23 @@ export async function runOllama(): Promise<void> {
     }
     console.log('')
 }
+
+export async function askOllama(userMessage: string): Promise<string> {
+    const response = await ollama.chat({
+        model: "saki007ster/CybersecurityRiskAnalyst:latest",
+        messages: [
+            {
+                role: "user",
+                content: userMessage,
+            },
+        ],
+        stream: true,
+    });
+
+    let fullResponse = "";
+    for await (const part of response) {
+        fullResponse += part.message.content;
+    }
+
+    return fullResponse;
+}

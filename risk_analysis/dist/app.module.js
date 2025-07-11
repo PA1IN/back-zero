@@ -11,12 +11,23 @@ const common_1 = require("@nestjs/common");
 const graphql_1 = require("@nestjs/graphql");
 const apollo_1 = require("@nestjs/apollo");
 const risk_module_1 = require("./risk/risk.module");
+const typeorm_1 = require("@nestjs/typeorm");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            typeorm_1.TypeOrmModule.forRoot({
+                type: "mysql",
+                host: "localhost",
+                port: 3310,
+                username: "risk_user",
+                password: "root",
+                database: "riskDB",
+                autoLoadEntities: true,
+                synchronize: true
+            }),
             graphql_1.GraphQLModule.forRoot({
                 driver: apollo_1.ApolloDriver,
                 autoSchemaFile: true,

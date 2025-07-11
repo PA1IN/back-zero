@@ -8,8 +8,8 @@ async function bootstrap() {
     origin: "*"
   });
   
-  await app.listen(3003);
-
+  await app.listen(3004);
+  console.log(`servidor corriendo en...${await app.getUrl()}`);
   
 }
 bootstrap();

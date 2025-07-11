@@ -5,6 +5,11 @@ import { runOllama } from './ollama/ollama';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   await runOllama();
+  app.enableCors({
+    origin: '*',
+    credentials: true
+  }
+  )
   await app.listen(3006);
 }
 bootstrap();

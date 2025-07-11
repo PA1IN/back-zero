@@ -7,8 +7,14 @@ type LoginResponse {
   idDevice: String!
 }
 
+type TokenCheck {
+  ok: Boolean!
+  userId: Int
+}
+
 type Query {
   hello: String!
+  validateToken(token: String!): TokenCheck!
 }
 
 type Mutation {

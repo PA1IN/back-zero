@@ -31,16 +31,16 @@ export class AuthService {
     async login(loginInput: LoginInput, ip: string): Promise<LoginResponse>{
 
         //Se genera el token con los datos recibidos para que access control lo compara con lo que hay en base de datos;
-        //const user = await this.usersService.findByEmail(loginInput.email);
         const user = await this.usersService.findByEmail(loginInput.email);
 
-        if(!user){
-            throw new Error("Usuario no registrado");
+        if(!user)
+        {
+            throw new Error("usuario no registrado");
         }
 
         try{
             const payload = {
-                userId : user.id,
+                userId: user?.id,
                 email: loginInput.email, 
                 navigator: loginInput.navigator, 
                 zone: loginInput.zone, 
@@ -72,11 +72,20 @@ export class AuthService {
             zone: input.timeZone
         });
 
+        const userPlain = {
+            id: user.id,
+            email: user.email,
+            //password: user.password,
+            role: user.role,
+            navigator: user.navigator,
+            zone: user.zone
+        }
+
         ///############################################################################ Request a Device
         try {
             const result = await syncUserDevice(user.id, ip, input.operatingSystem);
             console.log('Resultado de syncUserDevice:', result); // debería imprimir el id del dispositivo
-            const tokenUser = this.jwtService.sign(user);
+            const tokenUser = this.jwtService.sign(userPlain);
             return ({token: tokenUser, idDevice: result}) as LoginResponse;
         } catch (error) {
             console.warn('Error al sincronizar con auth-device:', error);

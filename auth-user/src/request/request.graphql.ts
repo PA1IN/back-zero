@@ -1,6 +1,6 @@
 import { gql, GraphQLClient } from "graphql-request";
 
-const url = 'http://localhost:3003/graphql';
+const url = 'http://192.168.1.4:3004/graphql';
 
 const client = new GraphQLClient(url);
 

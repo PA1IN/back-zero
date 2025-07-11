@@ -9,5 +9,7 @@ async function bootstrap() {
     origin: "*"
   })
   await app.listen(config.get<number>('PORT') || 3002);
+  console.log(`servidor corriendo...${await app.getUrl()}`)
+
 }
 bootstrap();

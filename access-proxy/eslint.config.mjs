@@ -27,9 +27,12 @@ export default tseslint.config(
   },
   {
     rules: {
+    
+      'prettier/prettier': ['off', { singleQuote: true }],
+      "@typescript-eslint/explicit-module-boundary-types": "off",
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-floating-promises': 'warn',
-      '@typescript-eslint/no-unsafe-argument': 'warn'
+      '@typescript-eslint/no-unsafe-argument': 'off'
     },
   },
 );

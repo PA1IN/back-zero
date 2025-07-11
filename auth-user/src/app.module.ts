@@ -15,7 +15,6 @@ import { User } from './users/entities/user.entity';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      context: ({ req }) => ({ req })
     }),
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],

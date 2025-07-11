@@ -1,5 +1,8 @@
+import { ConfigService } from "@nestjs/config";
 export declare class ProxyService {
-    private accessControlUrl;
-    forward(query: string, variables?: any): Promise<unknown>;
-    forwardAccessControl(query: string): Promise<void>;
+    private readonly cfg;
+    private readonly accessControlUrl;
+    constructor(cfg: ConfigService);
+    checkAccess(token: string): Promise<boolean>;
+    forward(query: string, variables: any, token: string): Promise<unknown>;
 }

@@ -10,11 +10,16 @@ exports.RiskModule = void 0;
 const common_1 = require("@nestjs/common");
 const risk_resolver_1 = require("./risk.resolver");
 const risk_service_1 = require("./risk.service");
+const risk_entiy_1 = require("./entity/risk-entiy");
+const typeorm_1 = require("@nestjs/typeorm");
 let RiskModule = class RiskModule {
 };
 exports.RiskModule = RiskModule;
 exports.RiskModule = RiskModule = __decorate([
     (0, common_1.Module)({
+        imports: [
+            typeorm_1.TypeOrmModule.forFeature([risk_entiy_1.RiskEntity])
+        ],
         providers: [risk_resolver_1.RiskResolver, risk_service_1.RiskService],
     })
 ], RiskModule);

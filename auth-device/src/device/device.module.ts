@@ -4,13 +4,19 @@ import { DeviceService } from "./device.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { DeviceEntity } from "./entity/device.entity";
 import { JwtModule } from "@nestjs/jwt";
-import { ConfigModule } from "@nestjs/config";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 
 
 @Module({
     imports: [
         TypeOrmModule.forFeature([DeviceEntity]),
-        JwtModule.register({}),
+        JwtModule.registerAsync({
+            imports: [ConfigModule],
+            inject: [ConfigService],
+            useFactory: (config: ConfigService) => ({
+                secret: config.get<string>('JWT_SECRET'),
+                signOptions: { expiresIn: '1d'},
+            }),}),
         ConfigModule
     ],
     providers:[DeviceResolver, DeviceService]

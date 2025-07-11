@@ -10,11 +10,23 @@ exports.ProxyModule = void 0;
 const proxy_resolver_1 = require("./proxy.resolver");
 const proxy_service_1 = require("./proxy.service");
 const common_1 = require("@nestjs/common");
+const config_1 = require("@nestjs/config");
+const graphql_1 = require("@nestjs/graphql");
+const graphql_type_json_1 = require("graphql-type-json");
+const apollo_1 = require("@nestjs/apollo");
 let ProxyModule = class ProxyModule {
 };
 exports.ProxyModule = ProxyModule;
 exports.ProxyModule = ProxyModule = __decorate([
     (0, common_1.Module)({
+        imports: [
+            config_1.ConfigModule.forRoot({ isGlobal: true }),
+            graphql_1.GraphQLModule.forRoot({
+                driver: apollo_1.ApolloDriver,
+                autoSchemaFile: true,
+                resolvers: { JSON: graphql_type_json_1.default },
+            }),
+        ],
         providers: [proxy_resolver_1.ProxyResolver, proxy_service_1.ProxyService]
     })
 ], ProxyModule);

@@ -20,7 +20,7 @@ exports.AppModule = AppModule = __decorate([
         imports: [
             proxy_module_1.ProxyModule,
             graphql_1.GraphQLModule.forRoot({
-                context: ({ req }) => ({ req }),
+                context: ({ req, res }) => ({ req, res }),
                 driver: apollo_1.ApolloDriver,
                 playground: true,
                 autoSchemaFile: (0, path_1.join)(process.cwd(), "schema.gql")

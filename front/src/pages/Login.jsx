@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import FingerprintJS from '@fingerprintjs/fingerprintjs';
-import { useMutation } from "@apollo/client";
+import { useLazyQuery, useMutation } from "@apollo/client";
 //#Clientes
 import clientUser from "../graphql/apolloUserClient";
 import clientDevice from "../graphql/apolloDeviceClient";
 import clientProxy from "../graphql/apolloProxyClient";
 //import { PRINTEO } from "../graphql/query";
 //#Peticiones
-import { LOGIN, PROXY } from "../graphql/mutation";
+import { LOGIN} from "../graphql/mutation";
+import { PROXY } from "../graphql/query";
 import { LOGIN_DEVICE } from "../graphql/mutation";
 //#Estilos
 import "../style/login.css";
@@ -17,10 +19,11 @@ const Login = () =>{
         email: "",
         pass : "",
     });
+    const navigate = useNavigate();
 
     const [login,{data, loading, error}] = useMutation(LOGIN,{client:clientUser});
     const [loginDevice, {data: dataDevice, error: errorDevice}] = useMutation(LOGIN_DEVICE, {client: clientDevice});
-    const [proxyForward, {data: proxyData, error: proxyError}] = useMutation(PROXY,{client: clientProxy});
+    const [proxyRequest, {data: proxyData, error: proxyError}] = useLazyQuery(PROXY,{client: clientProxy});
     //const [printeo] = useLazyQuery(PRINTEO, { client: clientUser }); lo use para el proxy nomas
     const [userAgent, setUserAgent] = useState('');
     const time = new Date();
@@ -84,7 +87,27 @@ const Login = () =>{
 
                 //Envio al Proxy (Aca se debe modificar en caso de ser necesario)
                 //aca hay que modificar el index.ts de la carpeta mutation
-                const responseProxy = await proxyForward;
+                setTimeout(async () => {
+                    const {data: resProxy} = await proxyRequest({
+                        variables: {
+                            operation: `mutation {
+                                verifyAccess(input: { deviceId: "${idDevice}" })
+                            }`,
+                        },
+                    });
+
+                    if(resProxy?.proxyRequest?.verifyAccess === true)
+                    {
+                        const resultadoToken = localStorage.getItem("userToken");
+                        alert(resultadoToken);
+                        console.log("resultado del token de proxy", resultadoToken);
+                        navigate("/Home");
+                    }else{
+                        alert("acceso denegado por proxy (token invalido)");
+                    }
+            }, 5000);
+
+                
                 //luego se recibe el token
 
             } catch (error) {

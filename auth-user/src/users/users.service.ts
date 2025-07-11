@@ -18,4 +18,9 @@ export class UsersService {
         const usuarioNuevo = this.usersRepository.create(userData);
         return this.usersRepository.save(usuarioNuevo);
     }
+
+    async findById(id: number):Promise<User | null>
+    {
+        return this.usersRepository.findOne({ where: { id }})
+    }
 }

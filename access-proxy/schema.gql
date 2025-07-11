@@ -3,10 +3,11 @@
 # ------------------------------------------------------
 
 type Query {
-  proxyRequest(operation: String!, variables: String): String!
+  proxyRequest(operation: String!, variables: String): JSON!
   printeo(operation: String!, variables: String): String!
 }
 
-type Mutation {
-  requestToken: String!
-}
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
