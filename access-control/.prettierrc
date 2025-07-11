@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "@nestjs-modules/mailer": "^2.0.2",
+    "@nestjs/mapped-types": "*",
+    "nodemailer": "^7.0.3"
+  },
+  "devDependencies": {
+    "@types/nodemailer": "^6.4.17"
+  },
+  
+  "singleQuote": true,
+  "trailingComma": "all",
+  "endOfLine": "crlf",
+  "tabWidth": 2,
+  "semi": true
+
+}
