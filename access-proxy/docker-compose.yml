@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  accessproxy:
+    build: .
+    container_name: access_proxy_service
+    ports:
+      - '3003:3003'
+    environment:
+      ACCESS_CONTROL_URL: http://192.168.1.5:3005/graphql
+

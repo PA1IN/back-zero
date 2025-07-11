@@ -49,11 +49,14 @@ const Register = () => {
                         }
                     }
                 });
-
+                
                 localStorage.setItem("idDevice", response.data.register.idDevice);
+                alert("Usuario registrado con exito")
+                setForm({email: "", pass: ""})
 
             } catch (error) {
                 console.log(error);
+                alert(error);
             };
         }
     };

@@ -90,7 +90,7 @@ export class AccessControlService {
     }>(queryDevice, {
       token,
       deviceId,
-      userId: validateToken.userId,
+      userId: decodedToken.userId,
     });
 
 

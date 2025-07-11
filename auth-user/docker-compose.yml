@@ -17,7 +17,7 @@ services:
   authuser:
     build: .
     ports:
-      - '3003:3003'
+      - '3002:3002'
     depends_on:
       - mysql
     environment:
@@ -26,8 +26,8 @@ services:
       DB_USERNAME: authuser
       DB_PASSWORD: authuserpass
       DB_NAME: auth_db
-      JWT_SECRET: clave_super_segura
-      RISK_ANALYSIS_URL: http://localhost:3005/risk
+      JWT_SECRET: supersecreto123
+      RISK_ANALYSIS_URL: http://riskanalysis:3006/risk
 
 volumes:
   mysql_data:

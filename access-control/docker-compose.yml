@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  accesscontrol:
+    build: .
+    container_name: access_control_service
+    ports:
+      - '3005:3005'
+    environment:
+      AUTH_USER_URL: http://192.168.1.2:3002/graphql
+      AUTH_DEVICE_URL: http://192.168.1.4:3004/graphql
+      RISK_ANALYSIS_URL: http://192.168.1.6:3006/graphql

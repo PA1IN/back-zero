@@ -87,7 +87,7 @@ const Login = () =>{
 
                 //Envio al Proxy (Aca se debe modificar en caso de ser necesario)
                 //aca hay que modificar el index.ts de la carpeta mutation
-                setTimeout(async () => {
+                
                     const {data: resProxy} = await proxyRequest({
                         variables: {
                             operation: `mutation {
@@ -101,11 +101,12 @@ const Login = () =>{
                         const resultadoToken = localStorage.getItem("userToken");
                         alert(resultadoToken);
                         console.log("resultado del token de proxy", resultadoToken);
+                        //setForm({email: "", pass: ""})
                         navigate("/Home");
                     }else{
                         alert("acceso denegado por proxy (token invalido)");
                     }
-            }, 5000);
+            
 
                 
                 //luego se recibe el token
